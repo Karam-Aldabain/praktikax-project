@@ -8,7 +8,6 @@ RUN apt-get update \
 WORKDIR /var/www/html
 COPY . ./
 
-ENV PORT=8080
 EXPOSE 8080
 
-CMD ["sh", "-c", "php -S 0.0.0.0:${PORT} -t public"]
+CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080} -t public"]
