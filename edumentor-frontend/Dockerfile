@@ -1,9 +1,9 @@
 FROM node:20-alpine AS build
 
 WORKDIR /app
-COPY package.json package-lock.json ./
+COPY ./edumentor-frontend/package.json ./edumentor-frontend/package-lock.json ./
 RUN npm ci
-COPY . .
+COPY ./edumentor-frontend/ ./
 RUN npm run build
 
 FROM nginx:alpine
