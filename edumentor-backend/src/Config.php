@@ -32,6 +32,10 @@ class Config
 
     public function get(string $key, ?string $default = null): ?string
     {
+        $env = getenv($key);
+        if ($env !== false && $env !== '') {
+            return $env;
+        }
         return $this->values[$key] ?? $default;
     }
 
