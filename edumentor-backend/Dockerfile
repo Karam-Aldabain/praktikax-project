@@ -12,4 +12,7 @@ COPY ./nginx.conf /etc/nginx/conf.d/default.conf.template
 COPY ./start.sh /usr/local/bin/start.sh
 RUN chmod +x /usr/local/bin/start.sh
 
+ENV PORT=8080
+EXPOSE 8080
+
 CMD ["/usr/local/bin/start.sh"]

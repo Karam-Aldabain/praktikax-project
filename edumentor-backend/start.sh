@@ -7,5 +7,8 @@ fi
 
 envsubst '$PORT' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf
 
+echo "Using PORT=$PORT"
+nginx -t
+
 php-fpm -D
 nginx -g 'daemon off;'
