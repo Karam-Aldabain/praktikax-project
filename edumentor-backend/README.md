@@ -6,6 +6,10 @@
 3. Point your web server document root to `public/`.
 4. Start the server (PHP built-in example): `php -S localhost:8080 -t public`
 
+## PostgreSQL
+1. Create a Postgres database and import `sql/schema.pgsql.sql`.
+2. Set `DB_DRIVER=pgsql`, `DB_PORT=5432`, and optionally `DB_SSLMODE=require`.
+
 ## API overview
 - Auth: `POST /api/auth/register`, `POST /api/auth/login`
 - Pages: `GET /api/pages`, `GET /api/pages/{slug}`

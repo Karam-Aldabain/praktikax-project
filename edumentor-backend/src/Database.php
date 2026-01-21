@@ -17,8 +17,24 @@ class Database
         $user = $config->get('DB_USER', 'root');
         $pass = $config->get('DB_PASSWORD', '');
         $charset = $config->get('DB_CHARSET', 'utf8mb4');
+        $driver = strtolower((string)$config->get('DB_DRIVER', 'mysql'));
+        $port = (string)$config->get('DB_PORT', '');
+        $sslmode = (string)$config->get('DB_SSLMODE', '');
 
-        $dsn = "mysql:host={$host};dbname={$db};charset={$charset}";
+        if ($driver === 'pgsql' || $driver === 'postgres') {
+            $dsn = "pgsql:host={$host};dbname={$db}";
+            if ($port !== '') {
+                $dsn .= ";port={$port}";
+            }
+            if ($sslmode !== '') {
+                $dsn .= ";sslmode={$sslmode}";
+            }
+        } else {
+            $dsn = "mysql:host={$host};dbname={$db};charset={$charset}";
+            if ($port !== '') {
+                $dsn .= ";port={$port}";
+            }
+        }
         $this->pdo = new PDO($dsn, $user, $pass, [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         ]);

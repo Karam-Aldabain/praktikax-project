@@ -1,0 +1,80 @@
+-- PraktikaX core schema (PostgreSQL)
+
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  email VARCHAR(190) NOT NULL UNIQUE,
+  full_name VARCHAR(190) NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  role VARCHAR(40) NOT NULL DEFAULT 'public_user',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS api_tokens (
+  id SERIAL PRIMARY KEY,
+  user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  token VARCHAR(128) NOT NULL UNIQUE,
+  expires_at TIMESTAMP NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS pages (
+  id SERIAL PRIMARY KEY,
+  slug VARCHAR(190) NOT NULL UNIQUE,
+  title VARCHAR(190) NOT NULL,
+  hero_title VARCHAR(190) DEFAULT '',
+  hero_subtitle TEXT,
+  hero_background VARCHAR(190) DEFAULT '',
+  sections_json TEXT,
+  meta_title VARCHAR(190) DEFAULT '',
+  meta_description TEXT,
+  schema_type VARCHAR(40) DEFAULT 'Organization',
+  is_active SMALLINT DEFAULT 1,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS submissions (
+  id SERIAL PRIMARY KEY,
+  page_id INT NOT NULL REFERENCES pages(id) ON DELETE CASCADE,
+  form_data_json TEXT,
+  file_path VARCHAR(255),
+  ip_address VARCHAR(80),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS media (
+  id SERIAL PRIMARY KEY,
+  file_name VARCHAR(255) NOT NULL,
+  file_path VARCHAR(255) NOT NULL,
+  file_type VARCHAR(40) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS program_tracks (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(190) NOT NULL,
+  category VARCHAR(100) NOT NULL,
+  description TEXT,
+  is_active SMALLINT DEFAULT 1,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS partner_page_access (
+  id SERIAL PRIMARY KEY,
+  user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  page_id INT NOT NULL REFERENCES pages(id) ON DELETE CASCADE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS programs (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(190) NOT NULL,
+  description TEXT,
+  category VARCHAR(120) NOT NULL,
+  stipend NUMERIC(10, 2) DEFAULT 0,
+  partner VARCHAR(190) DEFAULT '',
+  start_date DATE NULL,
+  published SMALLINT DEFAULT 1,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
