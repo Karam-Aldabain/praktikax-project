@@ -5,8 +5,9 @@ RUN apt-get update \
   && docker-php-ext-install pdo pdo_mysql pdo_pgsql zip \
   && rm -rf /var/lib/apt/lists/*
 
-RUN a2dismod mpm_event mpm_worker \
-  && a2enmod mpm_prefork rewrite
+RUN a2dismod mpm_event mpm_worker mpm_prefork \
+  && a2enmod mpm_prefork rewrite \
+  && rm -f /etc/apache2/mods-enabled/mpm_event.load /etc/apache2/mods-enabled/mpm_worker.load
 
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
