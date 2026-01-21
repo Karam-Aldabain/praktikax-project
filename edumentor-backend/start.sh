@@ -5,7 +5,11 @@ if [ -z "$PORT" ]; then
   PORT=8080
 fi
 
-envsubst '$PORT' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf
+if [ -z "$CORS_ORIGIN" ]; then
+  CORS_ORIGIN="*"
+fi
+
+envsubst '$PORT $CORS_ORIGIN' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf
 
 echo "Using PORT=$PORT"
 nginx -t
