@@ -63,6 +63,12 @@ $mediaController = new MediaController($db, $config);
 $partnerController = new PartnerController($db, $config);
 $programController = new ProgramController($db, $config);
 
+$router->get('/', function () {
+    return Response::json([
+        'status' => 'ok',
+        'message' => 'PraktikaX API',
+    ]);
+});
 $router->get('/api/health', function () {
     return Response::json(['status' => 'ok']);
 });
