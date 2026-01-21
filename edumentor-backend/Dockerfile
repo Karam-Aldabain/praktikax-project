@@ -6,10 +6,10 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /var/www/html
-COPY . .
+COPY ./edumentor-backend/ ./
 
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
-COPY ./start.sh /usr/local/bin/start.sh
+COPY ./edumentor-backend/nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./edumentor-backend/start.sh /usr/local/bin/start.sh
 RUN chmod +x /usr/local/bin/start.sh
 
 CMD ["/usr/local/bin/start.sh"]
